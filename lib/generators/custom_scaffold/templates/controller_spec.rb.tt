@@ -1,0 +1,166 @@
+require 'rails_helper'
+
+RSpec.describe '<%= file_name.camelize.pluralize %> Request', type: :request do
+  include RequestSpecHelper
+  let(:user) { create(:user) }
+
+  def compare_default(<%= file_name %>, <%= file_name %>_res, attributes)
+    <% attributes.each do |attr| %>
+      expect(<%= file_name %>_res['<%= attr.name %>']).to eq(<%= file_name %>.<%= attr.name %>)
+    <% end %>
+  end
+
+  def compare_attr(instance_attributes, instance)
+    instance_attributes.each do |key, instance_attribute|
+      if key.to_s.include?('_attributes')
+        instance_attribute.each do |value|
+          expect(!instance.send(key.to_s.split('_attributes')[0].nil?).as_json.find do |v|
+                   v[value.as_json.keys[0]] == value.as_json.values[0]
+                 end).to be_truthy
+        end
+
+        next
+      end
+
+      next if instance[key.to_s].instance_of?(ActiveSupport::TimeWithZone)
+
+      if instance[key.to_s].is_a?(Numeric)
+        expect(instance_attribute.to_s).to eq(instance[key.to_s].to_s)
+        next
+      end
+
+      if instance[key.to_s].instance_of?(BigDecimal)
+        expect(instance_attribute.to_f.round(2)).to eq(instance[key.to_s].to_f.round(2))
+        next
+      end
+
+      expect(instance_attribute).to eq(instance[key.to_s])
+    end
+  end
+
+  describe 'INDEX' do
+    before do
+      @count = rand(1..5)
+      @<%= file_name %> = create_list('<%= file_name %>', @count)
+    end
+
+    it 'should return all <%= file_name.pluralize %>' do
+      get '<%= "#{options[:path]}/" %>', headers: login_user(user)
+
+      expect(response).to have_http_status(200)
+
+      json['<%= file_name.pluralize %>'].each do |<%= file_name %>_res|
+        <%= file_name %> = @<%= file_name %>.find { |<%= file_name %>| <%= file_name %>.id == <%= file_name %>_res['id'] }
+        compare_default(<%= file_name %>, <%= file_name %>_res)
+      end
+      expect(json['total_count']).to eq(@count)
+    end
+
+    it 'should not return <%= file_name.pluralize %> if not logged in' do
+      get '<%= "#{options[:path]}/" %>'
+
+      without_login('user')
+    end
+  end
+
+  describe 'CREATE' do
+    before do
+      @<%= file_name %>_attr = attributes_for('<%= file_name %>')
+    end
+
+    it 'should create a <%= file_name %> and return it' do
+      post '<%= "#{options[:path]}/" %>', params: { <%= file_name %>: @<%= file_name %>_attr },
+                                             headers: login_user(user)
+
+      expect(response).to have_http_status(200)
+      compare_default(<%= file_name.camelize %>.last, json['<%= file_name %>'])
+    end
+
+    it 'should not create a <%= file_name %> with user not logged' do
+      post '<%= "#{options[:path]}/" %>', params: { <%= file_name %>: @<%= file_name %>_attr }
+
+      without_login('user')
+    end
+  end
+
+  describe 'SHOW' do
+    before do
+      @<%= file_name %> = create('<%= file_name %>')
+    end
+
+    it 'should return a <%= file_name %>' do
+      get "<%= "#{options[:path]}/" %>#{@<%= file_name %>.id}", headers: login_user(user)
+
+      expect(response).to have_http_status(200)
+      compare_default(@<%= file_name %>, json['<%= file_name %>'])
+    end
+
+    it 'should not return a <%= file_name %> with user not logged' do
+      get "<%= "#{options[:path]}/" %>#{@<%= file_name %>.id}"
+
+      without_login('user')
+    end
+
+    it 'should not return a <%= file_name %> with resource id not exists' do
+      get "<%= "#{options[:path]}/" %>#{rand(1..999_999)}", headers: login_user(user)
+
+      expect(response).to have_http_status(404)
+      expect(json['errors']).to eq('<%= file_name.camelize %> not found')
+    end
+  end
+
+  describe 'UPDATE' do
+    before do
+      @<%= file_name %> = create('<%= file_name %>')
+      @<%= file_name %>_attr = attributes_for('<%= file_name %>')
+    end
+
+    it 'should update <%= file_name %> and return it' do
+      put "<%= "#{options[:path]}/" %>#{@<%= file_name %>.id}", params: { <%= file_name %>: @<%= file_name %>_attr },
+                                                         headers: login_user(user)
+
+      expect(response).to have_http_status(200)
+      compare_default(<%= file_name.camelize %>.last, json['<%= file_name %>'])
+    end
+
+    it 'should not update <%= file_name %> with user not logged' do
+      put "<%= "#{options[:path]}/" %>#{@<%= file_name %>.id}", params: { <%= file_name %>: @<%= file_name %>_attr }
+
+      without_login('user')
+    end
+
+    it 'should not update <%= file_name %> with resource id not exists' do
+      put "<%= "#{options[:path]}/" %>#{rand(1..999_999)}", params: { <%= file_name %>: @<%= file_name %>_attr },
+                                                            headers: login_user(user)
+
+      expect(response).to have_http_status(404)
+      expect(json['errors']).to eq('<%= file_name.camelize %> not found')
+    end
+  end
+
+  describe 'DESTROY' do
+    before do
+      @<%= file_name %> = create('<%= file_name %>')
+    end
+
+    it 'should destroy <%= file_name %>' do
+      delete "<%= "#{options[:path]}/" %>#{@<%= file_name %>.id}", headers: login_user(user)
+
+      expect(response).to have_http_status(200)
+      expect(<%= file_name.camelize %>.last.is_deleted).to eq(true)
+    end
+
+    it 'should not destroy <%= file_name %> with user not logged' do
+      delete "<%= "#{options[:path]}/" %>#{@<%= file_name %>.id}"
+
+      without_login('user')
+    end
+
+    it 'should not destroy <%= file_name %> with resource id not exists' do
+      delete "<%= "#{options[:path]}/" %>#{rand(1..999_999)}", headers: login_user(user)
+
+      expect(response).to have_http_status(404)
+      expect(json['errors']).to eq('<%= file_name.camelize %> not found')
+    end
+  end
+end

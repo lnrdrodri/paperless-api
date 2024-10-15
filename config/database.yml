@@ -1,0 +1,37 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 10
+
+development:
+  adapter: postgresql
+  schema_search_path: public
+  host: "<%= ENV['local_database_host'] %>"
+  port: "<%= ENV['local_database_port'] %>"
+  database: "<%= ENV['local_database_name'] %>"
+  username: "<%= ENV['local_database_user'] %>"
+  password: "<%= ENV['local_database_pass'] %>"
+
+test:
+  adapter: postgresql
+  schema_search_path: public
+  host: "<%= ENV['teste_database_host'] %>"
+  port: "<%= ENV['teste_database_port'] %>"
+  database: "<%= ENV['teste_database_name'] %>"
+  username: "<%= ENV['teste_database_user'] %>"
+  password: "<%= ENV['teste_database_pass'] %>"
+
+production:
+  adapter: postgresql
+  schema_search_path: public
+  sslmode: require
+  port: <%= ENV["port"]%>
+  encoding: unicode
+  pool: 30
+  host: <%= ENV["host"]%>
+  reaping_frequency: 12
+  database: land_production
+  username: <%= ENV["database_user"] %>
+  password: <%= ENV["database_pass"] %>
+  prepared_statements: false
+  advisory_locks: false

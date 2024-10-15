@@ -1,0 +1,7 @@
+FactoryBot.define do
+  factory :<%= file_name %> do
+    <% attributes.each do |attribute| %>
+      <%= attribute.name %> { <%= default_value_for(attribute.type) %> }
+    <% end %>
+  end
+end

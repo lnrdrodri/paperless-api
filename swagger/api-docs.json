@@ -1,0 +1,16 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API V1",
+    "version": "v1",
+    "description": "#### Notes: Some data types we use are not valid in open-api, so a type cast was made for similar types\n            - json\n            - jsonb\n          "
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "components": {
+    "schemas": {}
+  }
+}
