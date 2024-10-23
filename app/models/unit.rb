@@ -1,15 +1,17 @@
-class User < ApplicationRecord
-  has_secure_password validations: false
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  
-  searchkick word_start: [:id]
+class Unit < ApplicationRecord
+  searchkick
+  has_many :addresses, as: :reference, dependent: :destroy
+  accepts_nested_attributes_for :addresses, allow_destroy: true
+
+  enum status: { active: 0, inactive: 1 }
 
   def search_data
     {
-      id:,
-      email:,
+      name:,
+      cnpj:,
+      status:,
       created_at:,
-      updated_at:
+      updated_at:,
     }
   end
 
@@ -17,7 +19,7 @@ class User < ApplicationRecord
     params ||= {}
     params[:where] = params[:where].merge({ is_deleted: [false, nil] })
 
-    SearchService.build(User, search_params, {
+    SearchService.build(Unit, search_params, {
       operator: 'and',
       page: page.nil? ? 1 : page,
       per_page: 30,

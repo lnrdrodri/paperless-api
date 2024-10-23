@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_15_144855) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_23_115334) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,13 +43,29 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_15_144855) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "schema_seedings", force: :cascade do |t|
+    t.string "version", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["version"], name: "index_schema_seedings_on_version", unique: true
+  end
+
   create_table "states", force: :cascade do |t|
     t.string "name", null: false
-    t.string "iso", null: false
+    t.string "uf", null: false
     t.bigint "country_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_states_on_country_id"
+  end
+
+  create_table "units", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "cnpj", null: false
+    t.integer "status", default: 0
+    t.boolean "is_deleted", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

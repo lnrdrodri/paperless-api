@@ -1,0 +1,6 @@
+class <%= name.camelize %>
+  def self.run
+  end
+  def self.rollback
+  end
+end

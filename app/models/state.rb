@@ -3,5 +3,5 @@ class State < ApplicationRecord
   has_many :cities
 
   validates :name, presence: true
-  validates :iso, presence: true
+  validates :uf, presence: true
 end
