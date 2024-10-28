@@ -65,13 +65,13 @@ RSpec.describe 'Units Request', type: :request do
 
   describe 'CREATE' do
     before do
-      @unit_attr = attributes_for('unit')
+      @unit_attr = attributes_for(:unit)
+      @unit_attr[:addresses_attributes] = [attributes_for(:address, reference_type: nil, reference_id: nil)]
     end
 
     it 'should create a unit and return it' do
       post '/v1/users/units', params: { unit: @unit_attr },
                                              headers: login_user(user)
-
       expect(response).to have_http_status(200)
       compare_default(Unit.last, json['unit'])
     end
@@ -85,12 +85,11 @@ RSpec.describe 'Units Request', type: :request do
 
   describe 'SHOW' do
     before do
-      @unit = create('unit')
+      @unit = create(:unit)
     end
 
     it 'should return a unit' do
       get "/v1/users/units/#{@unit.id}", headers: login_user(user)
-
       expect(response).to have_http_status(200)
       compare_default(@unit, json['unit'])
     end
@@ -111,8 +110,8 @@ RSpec.describe 'Units Request', type: :request do
 
   describe 'UPDATE' do
     before do
-      @unit = create('unit')
-      @unit_attr = attributes_for('unit')
+      @unit = create(:unit)
+      @unit_attr = attributes_for(:unit)
     end
 
     it 'should update unit and return it' do
@@ -141,7 +140,7 @@ RSpec.describe 'Units Request', type: :request do
 
   describe 'DESTROY' do
     before do
-      @unit = create('unit')
+      @unit = create(:unit)
     end
 
     it 'should destroy unit' do
@@ -165,3 +164,4 @@ RSpec.describe 'Units Request', type: :request do
     end
   end
 end
+

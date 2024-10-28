@@ -1,0 +1,1159 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/v1/users/participants":
+    get:
+      summary: Retrieves all participants
+      tags:
+      - V1|Users|Participants|ParticipantsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: term
+        required: false
+        in: query
+        description: Term to search
+        schema:
+          type: string
+      responses:
+        '200':
+          description: participants found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  participants:
+                    type: array
+                    items:
+                      allOf:
+                      - "$ref": "#/components/partials/v1/users/participants/participants/_participant"
+                  total_count:
+                    type: integer
+                  aggregators:
+                    type: object
+                    properties: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    post:
+      summary: Create a participant
+      tags:
+      - V1|Users|Participants|ParticipantsResources
+      security:
+      - user_auth_jwt: []
+      parameters: []
+      responses:
+        '200':
+          description: Participant created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  participant:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/participants/participants/_participant"
+        '400':
+          description: Error on create participant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                participant:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    cnpj:
+                      type: string
+                    status:
+                      type: integer
+                    addresses_attributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                          number:
+                            type: string
+                          neighborhood:
+                            type: string
+                          city_id:
+                            type: integer
+                          zip_code:
+                            type: string
+  v1/users/participants/{participant_id}:
+    get:
+      summary: Retrieves a participant
+      tags:
+      - V1|Users|Participants|ParticipantsResources
+      parameters:
+      - name: participant_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Participant found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  participant:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/participants/participants/_participant"
+        '404':
+          description: Participant not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Participant not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    put:
+      summary: Update a participant
+      tags:
+      - V1|Users|Participants|ParticipantsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: participant_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Participant updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  participant:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/participants/participants/_participant"
+        '400':
+          description: Error on update participant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '404':
+          description: Participant not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Participant not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                participant:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    cnpj:
+                      type: string
+                    status:
+                      type: integer
+                    addresses_attributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                          number:
+                            type: string
+                          neighborhood:
+                            type: string
+                          city_id:
+                            type: integer
+                          zip_code:
+                            type: string
+    delete:
+      summary: Delete a participant
+      tags:
+      - V1|Users|Participants|ParticipantsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: participant_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Participant deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  participant:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/participants/participants/_participant"
+        '404':
+          description: Participant not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Participant not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+  "/v1/users/sessions":
+    post:
+      summary: Create a session
+      tags:
+      - V1|Users|Sessions|SessionsResources
+      security:
+      - user_auth_jwt: []
+      parameters: []
+      responses:
+        '200':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Error on create user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Invalid password
+        '404':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: User not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+  "/v1/users/units":
+    get:
+      summary: Retrieves all units
+      tags:
+      - V1|Users|Units|UnitsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: term
+        required: false
+        in: query
+        description: Term to search
+        schema:
+          type: string
+      responses:
+        '200':
+          description: units found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  units:
+                    type: array
+                    items:
+                      allOf:
+                      - "$ref": "#/components/partials/v1/users/units/units/_unit"
+                  total_count:
+                    type: integer
+                  aggregators:
+                    type: object
+                    properties:
+                      cnpj:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+                      name:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    post:
+      summary: Create a unit
+      tags:
+      - V1|Users|Units|UnitsResources
+      security:
+      - user_auth_jwt: []
+      parameters: []
+      responses:
+        '200':
+          description: Unit created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unit:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/units/units/_unit"
+        '400':
+          description: Error on create unit
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                unit:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    cnpj:
+                      type: string
+                    status:
+                      type: integer
+                    addresses_attributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                          number:
+                            type: string
+                          neighborhood:
+                            type: string
+                          city_id:
+                            type: integer
+                          zip_code:
+                            type: string
+  v1/users/units/{unit_id}:
+    get:
+      summary: Retrieves a unit
+      tags:
+      - V1|Users|Units|UnitsResources
+      parameters:
+      - name: unit_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Unit found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unit:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/units/units/_unit"
+        '404':
+          description: Unit not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Unit not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    put:
+      summary: Update a unit
+      tags:
+      - V1|Users|Units|UnitsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: unit_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Unit updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unit:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/units/units/_unit"
+        '400':
+          description: Error on update unit
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '404':
+          description: Unit not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Unit not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                unit:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    cnpj:
+                      type: string
+                    status:
+                      type: integer
+                    addresses_attributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                          number:
+                            type: string
+                          neighborhood:
+                            type: string
+                          city_id:
+                            type: integer
+                          zip_code:
+                            type: string
+    delete:
+      summary: Delete a unit
+      tags:
+      - V1|Users|Units|UnitsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: unit_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Unit deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unit:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/units/units/_unit"
+        '404':
+          description: Unit not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Unit not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+  "/v1/users/users":
+    get:
+      summary: Retrieves all users
+      tags:
+      - V1|Users|Users|UsersResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: term
+        required: false
+        in: query
+        description: Term to search
+        schema:
+          type: string
+      responses:
+        '200':
+          description: users found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      allOf:
+                      - "$ref": "#/components/partials/v1/users/users/users/_user"
+                  total_count:
+                    type: integer
+                  aggregators:
+                    type: object
+                    properties:
+                      name:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+                      email:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    post:
+      summary: Create a user
+      tags:
+      - V1|Users|Users|UsersResources
+      security:
+      - user_auth_jwt: []
+      parameters: []
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/users/users/_user"
+        '400':
+          description: Error on create user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+  v1/users/users/{user_id}:
+    get:
+      summary: Retrieves a user
+      tags:
+      - V1|Users|Users|UsersResources
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/users/users/_user"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: User not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    put:
+      summary: Update a user
+      tags:
+      - V1|Users|Users|UsersResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: User updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/users/users/_user"
+        '400':
+          description: Error on update user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: User not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+    delete:
+      summary: Delete a user
+      tags:
+      - V1|Users|Users|UsersResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/users/users/_user"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: User not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+servers:
+- url: http://localhost:8080
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+        reference_type:
+          type: string
+        reference_id:
+          type: string
+        street:
+          type: string
+        number:
+          type: string
+        complement:
+          type: string
+        neighborhood:
+          type: string
+        zip_code:
+          type: string
+        city_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    City:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        state_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Country:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        iso:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Participant:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        cnpj:
+          type: string
+        status:
+          type: string
+        is_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    State:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        uf:
+          type: string
+        country_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Unit:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        cnpj:
+          type: string
+        status:
+          type: string
+        is_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        password_digest:
+          type: string
+        persist_session:
+          type: boolean
+        is_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  partials:
+    v1:
+      users:
+        participants:
+          participants:
+            _participant:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                cnpj:
+                  type: string
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+                addresses_attributes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      street:
+                        type: string
+                      number:
+                        type: string
+                      neighborhood:
+                        type: string
+                      city_id:
+                        type: integer
+                      zip_code:
+                        type: string
+        units:
+          units:
+            _unit:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                cnpj:
+                  type: string
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+                addresses_attributes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      street:
+                        type: string
+                      number:
+                        type: string
+                      neighborhood:
+                        type: string
+                      city_id:
+                        type: integer
+                      zip_code:
+                        type: string
+        users:
+          users:
+            _user:
+              type: object
+              properties:
+                id:
+                  type: integer
+                email:
+                  type: string
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+  securitySchemes:
+    user_auth_jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      in: header

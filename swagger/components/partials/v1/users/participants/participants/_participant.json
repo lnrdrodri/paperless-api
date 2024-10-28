@@ -1,0 +1,47 @@
+{
+  "_participant": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      },
+      "cnpj": {
+        "type": "string"
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "addresses_attributes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string"
+            },
+            "neighborhood": {
+              "type": "string"
+            },
+            "city_id": {
+              "type": "integer"
+            },
+            "zip_code": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

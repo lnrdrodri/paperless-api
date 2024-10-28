@@ -7,6 +7,7 @@ class User < ApplicationRecord
   def search_data
     {
       id:,
+      name:,
       email:,
       created_at:,
       updated_at:
@@ -28,6 +29,6 @@ class User < ApplicationRecord
   end
 
   def self.agg_search_array
-    []
+    %i[name email]
   end
 end

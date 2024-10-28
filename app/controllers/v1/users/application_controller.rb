@@ -33,7 +33,7 @@ module V1
       def authorized
         unless logged_in?
           render json: {
-            message: 'User not logged'
+            errors: 'User not logged'
           }, status: :unauthorized
         end
       end

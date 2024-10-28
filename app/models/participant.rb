@@ -1,4 +1,4 @@
-class Unit < ApplicationRecord
+class Participant < ApplicationRecord
   searchkick
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true
@@ -19,7 +19,7 @@ class Unit < ApplicationRecord
     params ||= {}
     params[:where] = params[:where].merge({ is_deleted: [false, nil] })
 
-    SearchService.build(Unit, search_params, {
+    SearchService.build(Participant, search_params, {
       operator: 'and',
       page: page.nil? ? 1 : page,
       per_page: 30,
@@ -30,6 +30,6 @@ class Unit < ApplicationRecord
   end
 
   def self.agg_search_array
-    %w[cnpj name]
+    []
   end
 end

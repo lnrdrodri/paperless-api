@@ -1,33 +1,27 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'models_helper'
 
 RSpec.configure do |config|
-  config.swagger_root = "#{Rails.root}/swagger"
+  config.openapi_root = Rails.root.join('swagger').to_s
 
-  models = ApplicationRecord.all_models_with_attributes
 
-  config.swagger_docs = {
-    'v1/api-docs.json' => {
+
+  config.openapi_specs = {
+    'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
         title: 'API V1',
-        version: 'v1',
-        description:
-          '#### Notes: Some data types we use are not valid in open-api, so a type cast was made for similar types
-            - json
-            - jsonb
-          '
+        version: 'v1'
       },
+      paths: {},
       servers: [
         {
-          url: 'http://localhost:8080'
+          url: ENV['API_URL'] || 'http://localhost:8080'
         }
       ],
-
       components: {
-        schemas: models,
+        schemas: all_models_with_attributes,
         partials: partials,
         securitySchemes: {
           user_auth_jwt: {
@@ -35,10 +29,15 @@ RSpec.configure do |config|
             scheme: :bearer,
             bearerFormat: :JWT,
             in: :header
-          }
+          },
         }
       }
     }
   }
-  config.swagger_format = :json
+
+  # Specify the format of the output Swagger file when running 'rswag:specs:swaggerize'.
+  # The openapi_specs configuration option has the filename including format in
+  # the key, this may want to be changed to avoid putting yaml in json files.
+  # Defaults to json. Accepts ':json' and ':yaml'.
+  config.openapi_format = :yaml
 end

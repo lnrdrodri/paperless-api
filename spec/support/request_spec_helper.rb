@@ -9,6 +9,6 @@ module RequestSpecHelper
 
   def without_login
     expect(response).to have_http_status(401)
-    expect(json['message']).to eq("User not logged")
+    expect(json['errors']).to eq("User not logged")
   end
 end
