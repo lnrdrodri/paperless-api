@@ -1,0 +1,32 @@
+class Role < ApplicationRecord
+  searchkick
+
+  def search_data
+    {
+      name:,
+      slug:,
+      description:,
+      is_active:,
+      created_at:,
+      updated_at:,
+    }
+  end
+
+  def self.search_default(search_params, params, page = 1, build_where = true)
+    params ||= {}
+    params[:where] = params[:where].merge({ is_deleted: [false, nil] })
+
+    SearchService.build(Role, search_params, {
+      operator: 'and',
+      page: page.nil? ? 1 : page,
+      per_page: 30,
+      smart_aggs: true,
+      body_options: { track_total_hits: true },
+      aggs: Participant.agg_search_array
+    }.merge(params), build_where || false)
+  end
+
+  def self.agg_search_array
+    %i[name slug is_active]
+  end
+end

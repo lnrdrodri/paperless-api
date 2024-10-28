@@ -668,6 +668,309 @@ paths:
                     type: string
                 example:
                   message: User not logged
+  "/v1/users/roles":
+    get:
+      summary: Retrieves all roles
+      tags:
+      - V1|Users|Roles|RolesResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: term
+        required: false
+        in: query
+        description: Term to search
+        schema:
+          type: string
+      responses:
+        '200':
+          description: roles found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roles:
+                    type: array
+                    items:
+                      allOf:
+                      - "$ref": "#/components/partials/v1/users/roles/_role"
+                  total_count:
+                    type: integer
+                  aggregators:
+                    type: object
+                    properties:
+                      name:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+                      slug:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+                      is_active:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    post:
+      summary: Create a role
+      tags:
+      - V1|Users|Roles|RolesResources
+      security:
+      - user_auth_jwt: []
+      parameters: []
+      responses:
+        '200':
+          description: Role created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/roles/_role"
+        '400':
+          description: Error on create role
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    slug:
+                      type: string
+                    description:
+                      type: string
+                    is_active:
+                      type: boolean
+  v1/users/roles/{role_id}:
+    get:
+      summary: Retrieves a role
+      tags:
+      - V1|Users|Roles|RolesResources
+      parameters:
+      - name: role_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Role found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/roles/_role"
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Role not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    put:
+      summary: Update a role
+      tags:
+      - V1|Users|Roles|RolesResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: role_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Role updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/roles/_role"
+        '400':
+          description: Error on update role
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Role not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    slug:
+                      type: string
+                    description:
+                      type: string
+                    is_active:
+                      type: boolean
+    delete:
+      summary: Delete a role
+      tags:
+      - V1|Users|Roles|RolesResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: role_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Role deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/roles/_role"
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Role not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
   "/v1/users/sessions":
     post:
       summary: Create a session
@@ -1394,6 +1697,27 @@ components:
         updated_at:
           type: string
           format: date-time
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        is_active:
+          type: boolean
+        is_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
     State:
       type: object
       properties:
@@ -1522,6 +1846,26 @@ components:
                         type: integer
                       zip_code:
                         type: string
+        roles:
+          _role:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              slug:
+                type: string
+              description:
+                type: string
+              is_active:
+                type: boolean
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
         units:
           units:
             _unit:

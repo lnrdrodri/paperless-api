@@ -6,6 +6,12 @@ Rails.application.routes.draw do
       post 'sessions', to: 'sessions#create'
       delete 'sessions', to: 'sessions#destroy'
 
+      get '/roles', to: 'roles#index'
+      get '/roles/:id', to: 'roles#show'
+      post '/roles', to: 'roles#create'
+      put '/roles/:id', to: 'roles#update'
+      delete '/roles/:id', to: 'roles#destroy'
+
       namespace :units do
         get '/', to: 'units#index'
         get '/:id', to: 'units#show'
