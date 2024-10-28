@@ -21,6 +21,12 @@ Rails.application.routes.draw do
         put '/:id', to: 'participants#update'
         delete '/:id', to: 'participants#destroy'
       end
+
+      get '/addresses', to: 'addresses#index'
+      get '/addresses/:id', to: 'addresses#show'
+      post '/addresses', to: 'addresses#create'
+      put '/addresses/:id', to: 'addresses#update'
+      delete '/addresses/:id', to: 'addresses#destroy'
     end
   end
 

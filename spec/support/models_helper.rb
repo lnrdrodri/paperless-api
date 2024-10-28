@@ -126,7 +126,6 @@ module ModelsHelper
     partial_path = partial_path.sub('_spec.rb', '')
     partial_name = "_#{partial_path.split('/').last.singularize}"
 
-
     "#/components/partials/#{partial_path}/#{partial_name}"
   end
 
@@ -137,7 +136,6 @@ module ModelsHelper
     model_name = partial_path.split('/').last.singularize
   
     model = model_name.classify.constantize
-  
     {
       type: :object,
       properties: model.agg_search_array.each_with_object({}) do |agg, properties|
@@ -150,7 +148,7 @@ module ModelsHelper
             sum_other_doc_count: { type: :integer },
             buckets: {
               type: :array,
-              items: format_type[model.type_for_attribute(agg).type]
+              items: agg.to_s.include?('_id') ? { type: 'integer' } : format_type[model.type_for_attribute(agg).type || :string]
             }
           }
         }
@@ -160,7 +158,7 @@ module ModelsHelper
 
   def format_type
     {
-      integer: { type: 'string' },
+      integer: { type: 'integer' },
       float: { type: 'number' },
       decimal: { type: 'number' },
       string: { type: 'string' },
@@ -171,8 +169,8 @@ module ModelsHelper
       time: { type: 'string', format: 'date-time' },
       timestamp: { type: 'string', format: 'date-time' },
       binary: { type: 'string' },
-      big_decimal: { type: 'string' },
-      big_integer: { type: 'string' },
+      big_decimal: { type: 'integer' },
+      big_integer: { type: 'integer' },
       serialized: { type: 'string' },
       uuid: { type: 'string' },
       json: { type: 'string' },

@@ -11,13 +11,13 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'API V1',
+        title: 'API GOLD VAULT',
         version: 'v1'
       },
       paths: {},
       servers: [
         {
-          url: ENV['API_URL'] || 'http://localhost:8080'
+          url: "http://#{ENV['HOST'] || 'localhost'}:#{ENV['PORT'] || '3000'}"
         }
       ],
       components: {

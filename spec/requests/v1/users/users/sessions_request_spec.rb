@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "V1::Users::SessionsController", type: :request do
+RSpec.describe "Sessions Request", type: :request do
   describe 'CREATE' do
     let(:password) { Faker::Internet.password }
     let(:user) { create(:user, password: password) }

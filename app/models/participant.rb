@@ -25,7 +25,7 @@ class Participant < ApplicationRecord
       per_page: 30,
       smart_aggs: true,
       body_options: { track_total_hits: true },
-      aggs: User.agg_search_array
+      aggs: Participant.agg_search_array
     }.merge(params), build_where || false)
   end
 

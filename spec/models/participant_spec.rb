@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Participant, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:address) { create(:address) }
+
+  it 'should create a address' do
+    expect(address).to be_valid
+  end
 end

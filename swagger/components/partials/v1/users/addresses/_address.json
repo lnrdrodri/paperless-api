@@ -1,0 +1,54 @@
+{
+  "_address": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "reference_type": {
+        "type": "string"
+      },
+      "reference_id": {
+        "type": "integer"
+      },
+      "street": {
+        "type": "string"
+      },
+      "number": {
+        "type": "string"
+      },
+      "neighborhood": {
+        "type": "string"
+      },
+      "zip_code": {
+        "type": "string"
+      },
+      "city_id": {
+        "type": "integer"
+      },
+      "city_name": {
+        "type": "string"
+      },
+      "state_id": {
+        "type": "integer"
+      },
+      "state_name": {
+        "type": "string"
+      },
+      "country_id": {
+        "type": "integer"
+      },
+      "country_name": {
+        "type": "string"
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  }
+}
