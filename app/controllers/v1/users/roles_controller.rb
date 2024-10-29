@@ -43,7 +43,7 @@ module V1
       end
 
       def role_params
-        params.require(:role).permit(:slug, :name, :description, :is_active)
+        params.require(:role).permit(:name, :description, :is_active)
       end
     end
   end

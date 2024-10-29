@@ -1,11 +1,11 @@
 
 require 'swagger_helper'
 
-RSpec.describe 'Roles API' do
+RSpec.describe 'Permissions API' do
   include ModelsHelper
-  path '/v1/users/roles' do
-    get 'Retrieves all roles' do
-      tags 'V1|Users|Roles|RolesResources'
+  path '/v1/users/permissions' do
+    get 'Retrieves all permissions' do
+      tags 'V1|Users|Permissions|PermissionsResources'
       produces 'application/json'
       consumes 'application/json'
       security [user_auth_jwt: []]
@@ -15,10 +15,10 @@ RSpec.describe 'Roles API' do
                 type: :string,
                 description: 'Term to search'
 
-      response '200', 'roles found' do
+      response '200', 'permissions found' do
           schema type: :object,
             properties: {
-              roles: {
+              permissions: {
                 type: 'array',
                 items: {
                   allOf: [
@@ -36,31 +36,31 @@ RSpec.describe 'Roles API' do
       user_not_logged
     end
 
-    post 'Create a role' do
-      tags 'V1|Users|Roles|RolesResources'
+    post 'Create a permission' do
+      tags 'V1|Users|Permissions|PermissionsResources'
       produces 'application/json'
       consumes 'application/json'
       security [user_auth_jwt: []]
-      parameter name: :role,
+      parameter name: :permission,
                 in: :body,
                 schema: {
                   type: :object,
                   properties: {
-                    role: {
+                    permission: {
                       type: :object,
                       properties: {
                         name: { type: :string },
+                        action: { type: :string },
                         description: { type: :string },
-                        is_active: { type: :boolean }
                       }
                     }
                   }
                 }
 
-      response '200', 'Role created' do
+      response '200', 'Permission created' do
         schema type: :object,
           properties: {
-            role: {
+            permission: {
               allOf: [
                 { '$ref': partial_path },
               ]
@@ -70,7 +70,7 @@ RSpec.describe 'Roles API' do
         run_test!
       end
 
-      response '400', 'Error on create role' do
+      response '400', 'Error on create permission' do
         schema type: :object,
           properties: {
             errors: { type: :string }
@@ -83,19 +83,19 @@ RSpec.describe 'Roles API' do
     end
   end
 
-  path 'v1/users/roles/{role_id}' do
-      get 'Retrieves a role' do
-      tags 'V1|Users|Roles|RolesResources'
+  path 'v1/users/permissions/{permission_id}' do
+      get 'Retrieves a permission' do
+      tags 'V1|Users|Permissions|PermissionsResources'
       produces 'application/json'
-      parameter name: :role_id,
+      parameter name: :permission_id,
                 in: :path,
                 type: :integer,
                 required: true
 
-      response '200', 'Role found' do
+      response '200', 'Permission found' do
         schema type: :object,
           properties: {
-            role: {
+            permission: {
               allOf: [
                 { '$ref': partial_path },
               ]
@@ -105,13 +105,13 @@ RSpec.describe 'Roles API' do
         run_test!
       end
 
-      response '404', 'Role not found' do
+      response '404', 'Permission not found' do
         schema type: :object,
           properties: {
             errors: { type: :string }
           },
           example: {
-            errors: 'Role not found'
+            errors: 'Permission not found'
           }
 
         run_test!
@@ -120,35 +120,35 @@ RSpec.describe 'Roles API' do
       user_not_logged
     end
 
-    put 'Update a role' do
-      tags 'V1|Users|Roles|RolesResources'
+    put 'Update a permission' do
+      tags 'V1|Users|Permissions|PermissionsResources'
       produces 'application/json'
       consumes 'application/json'
       security [user_auth_jwt: []]
-      parameter name: :role_id,
+      parameter name: :permission_id,
                 in: :path,
                 type: :integer,
                 required: true
-      parameter name: :role,
+      parameter name: :permission,
                 in: :body,
                 schema: {
                   type: :object,
                   properties: {
-                    role: {
+                    permission: {
                       type: :object,
                       properties: {
                         name: { type: :string },
+                        action: { type: :string },
                         description: { type: :string },
-                        is_active: { type: :boolean }       
                       }
                     }
                   }
                 }
 
-      response '200', 'Role updated' do
+      response '200', 'Permission updated' do
         schema type: :object,
           properties: {
-            role: {
+            permission: {
               allOf: [
                 { '$ref': partial_path },
               ]
@@ -158,7 +158,7 @@ RSpec.describe 'Roles API' do
         run_test!
       end
 
-      response '400', 'Error on update role' do
+      response '400', 'Error on update permission' do
         schema type: :object,
           properties: {
             errors: { type: :string }
@@ -167,13 +167,13 @@ RSpec.describe 'Roles API' do
           run_test!
       end
 
-      response '404', 'Role not found' do
+      response '404', 'Permission not found' do
         schema type: :object,
           properties: {
             errors: { type: :string }
           },
           example: {
-            errors: 'Role not found'
+            errors: 'Permission not found'
           }
 
         run_test!
@@ -182,20 +182,20 @@ RSpec.describe 'Roles API' do
       user_not_logged
     end
 
-    delete 'Delete a role' do
-      tags 'V1|Users|Roles|RolesResources'
+    delete 'Delete a permission' do
+      tags 'V1|Users|Permissions|PermissionsResources'
       produces 'application/json'
       consumes 'application/json'
       security [user_auth_jwt: []]
-      parameter name: :role_id,
+      parameter name: :permission_id,
                 in: :path,
                 type: :string,
                 required: true
 
-      response '200', 'Role deleted' do
+      response '200', 'Permission deleted' do
         schema type: :object,
           properties: {
-            role: {
+            permission: {
               allOf: [
                 { '$ref': partial_path },
               ]
@@ -205,13 +205,13 @@ RSpec.describe 'Roles API' do
         run_test!
       end
 
-      response '404', 'Role not found' do
+      response '404', 'Permission not found' do
         schema type: :object,
           properties: {
             errors: { type: :string }
           },
           example: {
-            errors: 'Role not found'
+            errors: 'Permission not found'
           }
 
         run_test!

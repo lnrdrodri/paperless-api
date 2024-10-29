@@ -668,6 +668,305 @@ paths:
                     type: string
                 example:
                   message: User not logged
+  "/v1/users/permissions":
+    get:
+      summary: Retrieves all permissions
+      tags:
+      - V1|Users|Permissions|PermissionsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: term
+        required: false
+        in: query
+        description: Term to search
+        schema:
+          type: string
+      responses:
+        '200':
+          description: permissions found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permissions:
+                    type: array
+                    items:
+                      allOf:
+                      - "$ref": "#/components/partials/v1/users/permissions/_permission"
+                  total_count:
+                    type: integer
+                  aggregators:
+                    type: object
+                    properties:
+                      name:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+                      description:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+                      action:
+                        type: object
+                        properties:
+                          meta:
+                            type: object
+                          doc_count:
+                            type: integer
+                          doc_count_error_upper_bound:
+                            type: integer
+                          sum_other_doc_count:
+                            type: integer
+                          buckets:
+                            type: array
+                            items:
+                              type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    post:
+      summary: Create a permission
+      tags:
+      - V1|Users|Permissions|PermissionsResources
+      security:
+      - user_auth_jwt: []
+      parameters: []
+      responses:
+        '200':
+          description: Permission created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permission:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/permissions/_permission"
+        '400':
+          description: Error on create permission
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                permission:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    action:
+                      type: string
+                    description:
+                      type: string
+  v1/users/permissions/{permission_id}:
+    get:
+      summary: Retrieves a permission
+      tags:
+      - V1|Users|Permissions|PermissionsResources
+      parameters:
+      - name: permission_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Permission found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permission:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/permissions/_permission"
+        '404':
+          description: Permission not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Permission not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+    put:
+      summary: Update a permission
+      tags:
+      - V1|Users|Permissions|PermissionsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: permission_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Permission updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permission:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/permissions/_permission"
+        '400':
+          description: Error on update permission
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+        '404':
+          description: Permission not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Permission not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                permission:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    action:
+                      type: string
+                    description:
+                      type: string
+    delete:
+      summary: Delete a permission
+      tags:
+      - V1|Users|Permissions|PermissionsResources
+      security:
+      - user_auth_jwt: []
+      parameters:
+      - name: permission_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Permission deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permission:
+                    allOf:
+                    - "$ref": "#/components/partials/v1/users/permissions/_permission"
+        '404':
+          description: Permission not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Permission not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User not logged
   "/v1/users/roles":
     get:
       summary: Retrieves all roles
@@ -701,21 +1000,6 @@ paths:
                     type: object
                     properties:
                       name:
-                        type: object
-                        properties:
-                          meta:
-                            type: object
-                          doc_count:
-                            type: integer
-                          doc_count_error_upper_bound:
-                            type: integer
-                          sum_other_doc_count:
-                            type: integer
-                          buckets:
-                            type: array
-                            items:
-                              type: string
-                      slug:
                         type: object
                         properties:
                           meta:
@@ -804,8 +1088,6 @@ paths:
                   type: object
                   properties:
                     name:
-                      type: string
-                    slug:
                       type: string
                     description:
                       type: string
@@ -919,8 +1201,6 @@ paths:
                   type: object
                   properties:
                     name:
-                      type: string
-                    slug:
                       type: string
                     description:
                       type: string
@@ -1697,12 +1977,29 @@ components:
         updated_at:
           type: string
           format: date-time
-    Role:
+    Permission:
       type: object
       properties:
         id:
           type: string
-        slug:
+        name:
+          type: string
+        description:
+          type: string
+        action:
+          type: string
+        is_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Role:
+      type: object
+      properties:
+        id:
           type: string
         name:
           type: string
@@ -1846,6 +2143,24 @@ components:
                         type: integer
                       zip_code:
                         type: string
+        permissions:
+          _permission:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              action:
+                type: string
+              description:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
         roles:
           _role:
             type: object
@@ -1853,8 +2168,6 @@ components:
               id:
                 type: integer
               name:
-                type: string
-              slug:
                 type: string
               description:
                 type: string

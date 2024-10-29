@@ -6,7 +6,6 @@ RSpec.describe 'Roles Request', type: :request do
 
   def compare_default(role, role_res)
     expect(role.id).to eq(role_res['id'])
-    expect(role.slug).to eq(role_res['slug'])
     expect(role.name).to eq(role_res['name'])
     expect(role.description).to eq(role_res['description'])
     expect(role.is_active).to eq(role_res['is_active'])

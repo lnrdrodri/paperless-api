@@ -1,13 +1,15 @@
-class Role < ApplicationRecord
-  searchkick
+class Permission < ApplicationRecord
+  searchkick word_start: [:id]
 
   def search_data
     {
+      id:,
       name:,
       description:,
-      is_active:,
+      action:,
+      is_deleted: is_deleted,
       created_at:,
-      updated_at:,
+      updated_at:
     }
   end
 
@@ -15,17 +17,17 @@ class Role < ApplicationRecord
     params ||= {}
     params[:where] = params[:where].merge({ is_deleted: [false, nil] })
 
-    SearchService.build(Role, search_params, {
+    SearchService.build(Permission, search_params, {
       operator: 'and',
       page: page.nil? ? 1 : page,
       per_page: 30,
       smart_aggs: true,
       body_options: { track_total_hits: true },
-      aggs: Participant.agg_search_array
+      aggs: Permission.agg_search_array
     }.merge(params), build_where || false)
   end
 
   def self.agg_search_array
-    %i[name is_active]
+    %i[name description action]
   end
 end

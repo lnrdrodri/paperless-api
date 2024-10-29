@@ -1,5 +1,5 @@
 {
-  "_role": {
+  "_permission": {
     "type": "object",
     "properties": {
       "id": {
@@ -8,11 +8,11 @@
       "name": {
         "type": "string"
       },
-      "description": {
+      "action": {
         "type": "string"
       },
-      "is_active": {
-        "type": "boolean"
+      "description": {
+        "type": "string"
       },
       "created_at": {
         "type": "string",

@@ -12,6 +12,12 @@ Rails.application.routes.draw do
       put '/roles/:id', to: 'roles#update'
       delete '/roles/:id', to: 'roles#destroy'
 
+      get '/permissions', to: 'permissions#index'
+      get '/permissions/:id', to: 'permissions#show'
+      post '/permissions', to: 'permissions#create'
+      put '/permissions/:id', to: 'permissions#update'
+      delete '/permissions/:id', to: 'permissions#destroy'
+
       namespace :units do
         get '/', to: 'units#index'
         get '/:id', to: 'units#show'
