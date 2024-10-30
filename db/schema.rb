@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_29_101413) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_29_110547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,9 +57,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_29_101413) do
     t.string "name"
     t.string "description"
     t.string "action"
+    t.string "path"
     t.boolean "is_deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "role_relationships", force: :cascade do |t|
+    t.string "reference_type"
+    t.integer "reference_id"
+    t.bigint "role_id", null: false
+    t.boolean "is_deleted", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_role_relationships_on_role_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -106,4 +117,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_29_101413) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "role_relationships", "roles"
 end

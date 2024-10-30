@@ -1301,6 +1301,41 @@ paths:
                   type: string
                 password:
                   type: string
+  "/v1/users/me":
+    get:
+      summary: Get current user
+      tags:
+      - V1|Users|Sessions|SessionsResources
+      security:
+      - user_auth_jwt: []
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+        '401':
+          description: User not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: User not authenticated
   "/v1/users/units":
     get:
       summary: Retrieves all units
@@ -1987,6 +2022,8 @@ components:
         description:
           type: string
         action:
+          type: string
+        path:
           type: string
         is_deleted:
           type: boolean

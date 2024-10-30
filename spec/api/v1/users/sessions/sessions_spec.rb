@@ -55,4 +55,41 @@ RSpec.describe 'Sessions API' do
       end
     end
   end
+
+  path '/v1/users/me' do
+    get 'Get current user' do
+      tags 'V1|Users|Sessions|SessionsResources'
+      produces 'application/json'
+      consumes 'application/json'
+      security [user_auth_jwt: []]
+
+      response '200', 'User found' do
+        schema type: :object,
+          properties: {
+            user: {
+              type: :object,
+              properties: {
+                id: { type: :integer },
+                name: { type: :string },
+                email: { type: :string }
+              }
+            }
+          }
+
+        run_test!
+      end
+
+      response '401', 'User not authenticated' do
+        schema type: :object,
+          properties: {
+            error: { type: :string }
+          },
+          example: {
+            error: 'User not authenticated'
+          }
+  
+          run_test!
+      end
+    end
+  end
 end

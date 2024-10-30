@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :users
       
       post 'sessions', to: 'sessions#create'
-      delete 'sessions', to: 'sessions#destroy'
+      get 'me', to: 'sessions#me'
 
       get '/roles', to: 'roles#index'
       get '/roles/:id', to: 'roles#show'

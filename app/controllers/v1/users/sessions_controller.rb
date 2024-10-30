@@ -12,10 +12,14 @@ module V1
         end
 
         if !@user.authenticate(params[:password])
-          return render json: { error: 'Invalid password' }, status: 401
+          return render json: { error: 'Invalid password' }, status: 404
         end
 
         render json: { token: encode_token({user_id: @user.id}) }, status: 200
+      end
+
+      def me 
+        @user
       end
     end
   end
