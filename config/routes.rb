@@ -16,6 +16,14 @@ Rails.application.routes.draw do
         put '/:id', to: 'units#update'
         delete '/:id', to: 'units#destroy'
       end
+
+      namespace :contacts do
+        get '/', to: 'contacts#index'
+        get '/:id', to: 'contacts#show'
+        post '/', to: 'contacts#create'
+        put '/:id', to: 'contacts#update'
+        delete '/:id', to: 'contacts#destroy'
+      end
     end
   end
 end

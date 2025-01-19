@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_23_115334) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_19_125203) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_23_115334) do
     t.bigint "city_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_deleted", default: false
     t.index ["city_id"], name: "index_addresses_on_city_id"
   end
 
@@ -36,9 +37,57 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_23_115334) do
     t.index ["state_id"], name: "index_cities_on_state_id"
   end
 
+  create_table "contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "mobile_phone"
+    t.string "position"
+    t.boolean "is_deleted", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "countries", force: :cascade do |t|
     t.string "name", null: false
     t.string "iso", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "cnpj", null: false
+    t.integer "status", default: 0
+    t.boolean "is_deleted", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "action"
+    t.string "path"
+    t.boolean "is_deleted", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "role_relationships", force: :cascade do |t|
+    t.string "reference_type"
+    t.integer "reference_id"
+    t.bigint "role_id", null: false
+    t.boolean "is_deleted", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_role_relationships_on_role_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.boolean "is_active", default: true
+    t.boolean "is_deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -66,6 +115,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_23_115334) do
     t.boolean "is_deleted", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "success_percentage"
+    t.integer "royalts"
+    t.bigint "contact_id", null: false
+    t.index ["contact_id"], name: "index_units_on_contact_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -78,4 +131,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_23_115334) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "role_relationships", "roles"
+  add_foreign_key "units", "contacts"
 end

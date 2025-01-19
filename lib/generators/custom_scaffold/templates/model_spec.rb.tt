@@ -1,9 +1,0 @@
-require 'rails_helper'
-
-RSpec.describe <%= @model_class_name %>, type: :model do
-  let(:<%= file_name %>) { create(:<%= file_name %>) }
-
-  it 'is valid with valid attributes' do
-    expect(<%= file_name %>).to be_valid
-  end
-end

@@ -1,5 +1,6 @@
 class Unit < ApplicationRecord
   searchkick
+  belongs_to :contact
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
@@ -9,6 +10,10 @@ class Unit < ApplicationRecord
     {
       name:,
       cnpj:,
+      success_percentage:,
+      royalts:,
+      contact_id:,
+      contact_name: contact&.name,
       status:,
       created_at:,
       updated_at:,
@@ -25,7 +30,7 @@ class Unit < ApplicationRecord
       per_page: 30,
       smart_aggs: true,
       body_options: { track_total_hits: true },
-      aggs: User.agg_search_array
+      aggs: Unit.agg_search_array
     }.merge(params), build_where || false)
   end
 

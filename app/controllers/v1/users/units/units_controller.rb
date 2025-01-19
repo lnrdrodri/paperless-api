@@ -49,11 +49,16 @@ module V1
         end
 
         def unit_params
-          params.require(:unit).permit(:name, :cnpj, :status)
+          params.require(:unit).permit(
+            :name, 
+            :cnpj, 
+            :status, 
+            :success_percentage, 
+            :royalts,
+            :contact_id
+          )
         end
       end
     end
   end
 end
-
-
