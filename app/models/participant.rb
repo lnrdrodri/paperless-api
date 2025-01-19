@@ -1,5 +1,9 @@
 class Participant < ApplicationRecord
   searchkick
+
+  belongs_to :unit
+  belongs_to :contact
+
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
@@ -10,6 +14,13 @@ class Participant < ApplicationRecord
       name:,
       cnpj:,
       status:,
+      company_name:,
+      document:,
+      taxation_regime:,
+      invoicing:,
+      unit_id:,
+      contact_id:,
+      is_deleted:,
       created_at:,
       updated_at:,
     }

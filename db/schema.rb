@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_29_110547) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_19_131830) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,6 +61,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_29_110547) do
     t.boolean "is_deleted", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "company_name"
+    t.string "document"
+    t.integer "taxation_regime"
+    t.string "invoicing"
+    t.bigint "unit_id"
+    t.bigint "contact_id"
+    t.index ["contact_id"], name: "index_participants_on_contact_id"
+    t.index ["unit_id"], name: "index_participants_on_unit_id"
   end
 
   create_table "permissions", force: :cascade do |t|
@@ -131,5 +139,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_29_110547) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "participants", "contacts"
+  add_foreign_key "participants", "units"
   add_foreign_key "role_relationships", "roles"
+  add_foreign_key "units", "contacts"
 end

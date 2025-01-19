@@ -15,6 +15,7 @@ class Unit < ApplicationRecord
       contact_id:,
       contact_name: contact&.name,
       status:,
+      is_deleted:,
       created_at:,
       updated_at:,
     }

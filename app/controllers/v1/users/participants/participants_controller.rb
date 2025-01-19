@@ -49,7 +49,17 @@ module V1
         end
 
         def participant_params
-          params.require(:participant).permit(:name, :cnpj, :status, addresses_attributes: %i[street number neighborhood city_id zip_code])
+          params.require(:participant).permit(
+            :name, 
+            :cnpj, 
+            :status, 
+            :company_name,
+            :document,
+            :taxation_regime,
+            :invoicing,
+            :unit_id,
+            :contact_id,
+            addresses_attributes: %i[street number neighborhood city_id zip_code])
         end
       end
     end
