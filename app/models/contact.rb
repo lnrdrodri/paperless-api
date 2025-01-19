@@ -1,12 +1,16 @@
-class <%= class_name %> < ApplicationRecord
-  searchkick word_start: [:id]
+class Contact < ApplicationRecord
+  searchkick
+  has_many :addresses, as: :reference, dependent: :destroy
+  accepts_nested_attributes_for :addresses, allow_destroy: true
 
   def search_data
     {
-      id:,
-      <%= attributes_with_type.map { |field| "#{field.name}: #{field.name}," }.join("\n") %>
+      name:,
+      email:,
+      mobile_phone:,
+      position:,
       created_at:,
-      updated_at:
+      updated_at:,
     }
   end
 
@@ -14,13 +18,17 @@ class <%= class_name %> < ApplicationRecord
     params ||= {}
     params[:where] = params[:where].merge({ is_deleted: [false, nil] })
 
-    SearchService.build(<%= class_name %>, search_params, {
+    SearchService.build(Contact, search_params, {
       operator: 'and',
       page: page.nil? ? 1 : page,
       per_page: 30,
       smart_aggs: true,
       body_options: { track_total_hits: true },
-      aggs: <%= class_name %>.agg_search_array
+      aggs: Contact.agg_search_array
     }.merge(params), build_where || false)
+  end
+
+  def self.agg_search_array
+    []
   end
 end

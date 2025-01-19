@@ -49,11 +49,17 @@ module V1
         end
 
         def unit_params
-          params.require(:unit).permit(:name, :cnpj, :status, addresses_attributes: %i[street number neighborhood city_id zip_code])
+          params.require(:unit).permit(
+            :name, 
+            :cnpj, 
+            :status, 
+            :success_percentage, 
+            :royalts,
+            :contact_id,
+            addresses_attributes: %i[street number neighborhood city_id zip_code]
+          )
         end
       end
     end
   end
 end
-
-

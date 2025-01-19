@@ -37,6 +37,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_29_110547) do
     t.index ["state_id"], name: "index_cities_on_state_id"
   end
 
+  create_table "contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "mobile_phone"
+    t.string "position"
+    t.boolean "is_deleted", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "countries", force: :cascade do |t|
     t.string "name", null: false
     t.string "iso", null: false
@@ -105,6 +115,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_29_110547) do
     t.boolean "is_deleted", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "success_percentage"
+    t.integer "royalts"
+    t.bigint "contact_id", null: false
+    t.index ["contact_id"], name: "index_units_on_contact_id"
   end
 
   create_table "users", force: :cascade do |t|
