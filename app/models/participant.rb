@@ -2,7 +2,7 @@ class Participant < ApplicationRecord
   searchkick
 
   belongs_to :unit
-  belongs_to :contact
+  belongs_to :contact, optional: true
 
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true

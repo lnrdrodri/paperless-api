@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_19_131830) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_27_182336) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -125,7 +125,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_19_131830) do
     t.datetime "updated_at", null: false
     t.float "success_percentage"
     t.integer "royalts"
-    t.bigint "contact_id", null: false
+    t.bigint "contact_id"
     t.index ["contact_id"], name: "index_units_on_contact_id"
   end
 
