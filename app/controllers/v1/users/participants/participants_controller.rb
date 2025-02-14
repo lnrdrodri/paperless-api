@@ -59,6 +59,8 @@ module V1
             :invoicing,
             :unit_id,
             :contact_id,
+            :success_percentage,
+            :royalts,
             addresses_attributes: %i[street number neighborhood city_id zip_code])
         end
       end

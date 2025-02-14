@@ -1,6 +1,8 @@
 json.id participant.id
 json.name participant.name
 json.cnpj participant.cnpj
+json.success_percentage participant.success_percentage
+json.royalts participant.royalts
 json.addresses participant.addresses do |address|
   json.partial! 'v1/users/addresses/address', address: address
 end
