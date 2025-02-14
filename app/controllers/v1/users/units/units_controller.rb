@@ -56,7 +56,7 @@ module V1
             :success_percentage, 
             :royalts,
             :contact_id,
-            addresses_attributes: %i[street number neighborhood city_id zip_code]
+            addresses_attributes: %i[id street number neighborhood city_id zip_code _destroy]
           )
         end
       end
