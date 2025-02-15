@@ -1,5 +1,5 @@
 class Unit < ApplicationRecord
-  searchkick
+  searchkick word_start: %i[id name cnpj]
   belongs_to :contact, optional: true
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true

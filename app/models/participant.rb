@@ -1,5 +1,5 @@
 class Participant < ApplicationRecord
-  searchkick
+  searchkick word_start: %i[id name cnpj]
 
   belongs_to :unit
   belongs_to :contact, optional: true
