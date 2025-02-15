@@ -3,3 +3,7 @@ json.name contact.name
 json.email contact.email
 json.mobile_phone contact.mobile_phone
 json.position contact.position
+json.reference_type contact.reference_type
+json.reference_id contact.reference_id
+json.created_at contact.created_at
+json.updated_at contact.updated_at

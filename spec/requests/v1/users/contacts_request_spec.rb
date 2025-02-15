@@ -6,7 +6,13 @@ RSpec.describe 'Contacts Request', type: :request do
 
   def compare_default(contact, contact_res)
     expect(contact_res['name']).to eq(contact.name)
-    expect(contact_res['cnpj']).to eq(contact.cnpj)
+    expect(contact_res['email']).to eq(contact.email)
+    expect(contact_res['mobile_phone']).to eq(contact.mobile_phone)
+    expect(contact_res['position']).to eq(contact.position)
+    expect(contact_res['reference_type']).to eq(contact.reference_type)
+    expect(contact_res['reference_id']).to eq(contact.reference_id)
+    expect(contact.created_at.to_i).to eq(DateTime.parse(contact_res['created_at']).to_i)
+    expect(contact.updated_at.to_i).to eq(DateTime.parse(contact_res['updated_at']).to_i)
   end
 
   def compare_attr(instance_attributes, instance)

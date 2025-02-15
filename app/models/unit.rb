@@ -1,6 +1,5 @@
 class Unit < ApplicationRecord
   searchkick word_start: %i[id name cnpj]
-  belongs_to :contact, optional: true
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
@@ -12,8 +11,6 @@ class Unit < ApplicationRecord
       cnpj:,
       success_percentage:,
       royalts:,
-      contact_id:,
-      contact_name: contact&.name,
       status:,
       is_deleted:,
       created_at:,

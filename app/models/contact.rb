@@ -1,5 +1,6 @@
 class Contact < ApplicationRecord
   searchkick
+  belongs_to :reference, polymorphic: true
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
@@ -9,6 +10,8 @@ class Contact < ApplicationRecord
       email:,
       mobile_phone:,
       position:,
+      reference_type:,
+      reference_id:,
       created_at:,
       updated_at:,
     }

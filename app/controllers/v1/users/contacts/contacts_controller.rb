@@ -52,7 +52,9 @@ module V1
             :name,
             :email,
             :mobile_phone,
-            :position
+            :position,
+            :reference_type,
+            :reference_id
           )
         end
       end
