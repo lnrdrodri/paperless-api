@@ -39,6 +39,12 @@ Rails.application.routes.draw do
       post '/addresses', to: 'addresses#create'
       put '/addresses/:id', to: 'addresses#update'
       delete '/addresses/:id', to: 'addresses#destroy'
+
+      get '/notes', to: 'notes#index'
+      get '/notes/:id', to: 'notes#show'
+      post '/notes', to: 'notes#create'
+      put '/notes/:id', to: 'notes#update'
+      delete '/notes/:id', to: 'notes#destroy'
       
       namespace :contacts do
         get '/', to: 'contacts#index'

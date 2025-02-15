@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_27_182336) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_15_124049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,11 +54,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_182336) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.string "reference_type"
+    t.integer "reference_id"
+    t.bigint "user_id", null: false
+    t.boolean "is_deleted", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
   create_table "participants", force: :cascade do |t|
     t.string "name", null: false
     t.string "cnpj", null: false
     t.integer "status", default: 0
-    t.boolean "is_deleted", default: true
+    t.boolean "is_deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "company_name"
@@ -75,20 +87,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_182336) do
     t.string "name"
     t.string "description"
     t.string "action"
-    t.string "path"
     t.boolean "is_deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "role_relationships", force: :cascade do |t|
-    t.string "reference_type"
-    t.integer "reference_id"
-    t.bigint "role_id", null: false
-    t.boolean "is_deleted", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["role_id"], name: "index_role_relationships_on_role_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -120,7 +121,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_182336) do
     t.string "name", null: false
     t.string "cnpj", null: false
     t.integer "status", default: 0
-    t.boolean "is_deleted", default: true
+    t.boolean "is_deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "success_percentage"
@@ -139,8 +140,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_182336) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "notes", "users"
   add_foreign_key "participants", "contacts"
   add_foreign_key "participants", "units"
-  add_foreign_key "role_relationships", "roles"
   add_foreign_key "units", "contacts"
 end
