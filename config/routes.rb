@@ -40,6 +40,8 @@ Rails.application.routes.draw do
       put '/addresses/:id', to: 'addresses#update'
       delete '/addresses/:id', to: 'addresses#destroy'
 
+      get '/cities', to: 'cities#index'
+
       get '/notes', to: 'notes#index'
       get '/notes/:id', to: 'notes#show'
       post '/notes', to: 'notes#create'

@@ -2,6 +2,7 @@ class Unit < ApplicationRecord
   searchkick word_start: %i[id name cnpj]
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true
+  has_many :contacts, as: :reference, dependent: :destroy
 
   enum status: { active: 0, inactive: 1 }
 

@@ -1,6 +1,8 @@
 class Contact < ApplicationRecord
   searchkick
   belongs_to :reference, polymorphic: true
+
+  scope :active, -> { where(is_deleted: [false, nil]) }
   has_many :addresses, as: :reference, dependent: :destroy
   accepts_nested_attributes_for :addresses, allow_destroy: true
 

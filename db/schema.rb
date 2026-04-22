@@ -95,6 +95,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_15_130346) do
   end
 
   create_table "roles", force: :cascade do |t|
+    t.string "slug"
     t.string "name"
     t.text "description"
     t.boolean "is_active", default: true

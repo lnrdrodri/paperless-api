@@ -2,6 +2,8 @@ class Address < ApplicationRecord
   searchkick
   belongs_to :city
 
+  scope :active, -> { where(is_deleted: [false, nil]) }
+
   validates :street, presence: true
   validates :number, presence: true
   validates :neighborhood, presence: true
